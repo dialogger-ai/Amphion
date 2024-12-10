@@ -13,8 +13,6 @@ import tqdm
 import warnings
 import torch
 from pydub import AudioSegment
-AudioSegment.converter = '/opt/homebrew/Cellar/ffmpeg/7.1_3/bin/ffmpeg'
-# FUCK THIS StuPID LOOKING WRONG ASS SHIT
 from pyannote.audio import Pipeline
 import pandas as pd
 
