@@ -61,3 +61,8 @@ source_audio
 result
 conversion_results
 get_available_gpu.py
+/preprocessors/Emilia/examples_processed
+*.onnx
+preprocessors/Emilia/config.json
+preprocessors/Emilia/config.json
+preprocessors/Emilia/config.json
