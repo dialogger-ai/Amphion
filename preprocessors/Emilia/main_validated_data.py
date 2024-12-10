@@ -2,6 +2,12 @@
 #
 # This source code is licensed under the MIT license found in the
 # LICENSE file in the root directory of this source tree.
+#
+# As I already have a nice selection of validated datasets...
+#
+# Tun the Emilia pipe MINIMALLY:  
+# just ASR, DNSMOS, then organize the copies.
+#
 
 import argparse
 import json
@@ -433,15 +439,15 @@ def main_process(audio_path, save_path=None, audio_name=None):
     logger.info("Step 4: ASR")
     asr_result = asr(segment_list, audio)
 
-    logger.info("Step 5: Filter")
     logger.info("Step 5.1: calculate mos_prediction")
     avg_mos, mos_list = mos_prediction(audio, asr_result)
 
     logger.info(f"Step 5.1: done, average MOS: {avg_mos}")
 
     logger.info("Step 5.2: Filter out files with less than average MOS")
-    filtered_list = filter(mos_list)
-
+    #filtered_list = filter(mos_list)
+    filtered_list = mos_list
+    
     logger.info("Step 6: write result into MP3 and JSON file")
     export_to_mp3(audio, filtered_list, save_path, audio_name)
 
