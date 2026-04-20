@@ -16,7 +16,7 @@
     },
     "separate": {
         "step1": {
-            "model_path": "model_data/UVR-MDX-NET-Inst_HQ_3.onnx", 
+            "model_path": "model_dataUVR-MDX-NET-Inst_HQ_3.onnx", 
             "denoise": true,
             "margin": 44100,
             "chunks": 15,

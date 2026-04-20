@@ -17,7 +17,7 @@ from pyannote.audio import Pipeline
 import pandas as pd
 
 from utils.tool import (
-    export_to_mp3,
+    export_to_wav,
     load_cfg,
     get_audio_files,
     detect_gpu,
@@ -441,7 +441,7 @@ def main_process(audio_path, save_path=None, audio_name=None):
     filtered_list = filter(mos_list)
 
     logger.info("Step 6: write result into MP3 and JSON file")
-    export_to_mp3(audio, filtered_list, save_path, audio_name)
+    export_to_wav(audio, filtered_list, save_path, audio_name)
 
     final_path = os.path.join(save_path, audio_name + ".json")
     with open(final_path, "w") as f:
@@ -478,7 +478,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--threads",
         type=int,
-        default=4,
+        default=32,
         help="The number of CPU threads to use per worker, e.g. will be multiplied by num workers.",
     )
     parser.add_argument(
@@ -509,6 +509,9 @@ if __name__ == "__main__":
         logger.info("Using CPU")
         device_name = "cpu"
         device = torch.device(device_name)
+        # whisperX expects compute type: int8
+        logger.info("Overriding the compute type to int8")
+        args.compute_type = "int8"
 
     check_env(logger)
 
@@ -533,8 +536,8 @@ if __name__ == "__main__":
         device_name,
         compute_type=args.compute_type,
         threads=args.threads,
-        asr_options={
-            "initial_prompt": "Um, Uh, Ah. Like, you know. I mean, right. Actually. Basically, and right? okay. Alright. Emm. So. Oh. 生于忧患,死于安乐。岂不快哉?当然,嗯,呃,就,这样,那个,哪个,啊,呀,哎呀,哎哟,唉哇,啧,唷,哟,噫!微斯人,吾谁与归?ええと、あの、ま、そう、ええ。äh, hm, so, tja, halt, eigentlich. euh, quoi, bah, ben, tu vois, tu sais, t'sais, eh bien, du coup. genre, comme, style. 응,어,그,음."
+        asr_options={"multilingual":True, "hotwords":None,
+                    "initial_prompt": "Um, Uh, Ah. Like, you know. I mean, right. Actually. Basically, and right? okay. Alright. Emm. So. Oh. 生于忧患,死于安乐。岂不快哉?当然,嗯,呃,就,这样,那个,哪个,啊,呀,哎呀,哎哟,唉哇,啧,唷,哟,噫!微斯人,吾谁与归?ええと、あの、ま、そう、ええ。äh, hm, so, tja, halt, eigentlich. euh, quoi, bah, ben, tu vois, tu sais, t'sais, eh bien, du coup. genre, comme, style. 응,어,그,음."
         },
     )
 
